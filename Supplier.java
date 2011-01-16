@@ -1,0 +1,204 @@
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+import java.sql.*;
+class Supplier extends JFrame
+{
+ 	JLabel head;
+	Font fhead,fcontrols;
+	JLabel lsuppid,lsuppname,lsuppaddr,lsuppcontact,lsuppmob,lsuppfax,lsuppemail,lsuppcomments;
+	JTextField tsuppid,tsuppname,tsuppcontact,tsuppmob,tsuppfax,tsuppemail;
+	JTextArea tsuppaddr,tsuppcomments;
+	//JComboBox csupplier;
+	JButton bfirst,bprevious,bnext,blast,badd,bedit,bdelete,bsave;
+	GridBagLayout gb;	
+	GridBagConstraints gbc;
+	Supplier()
+	{
+		Container c=getContentPane();
+		c.setLayout(new FlowLayout()); 
+		//String ssupplier[]={"L&T","abc","xyz"};
+		gb=new GridBagLayout();		
+		gbc=new GridBagConstraints();	
+		getContentPane().setLayout(gb);	
+		head=new JLabel("Supplier Details Form");		
+		fhead=new Font("Trebuchet MS",Font.BOLD|Font.ITALIC,30);		
+		fcontrols=new Font("Trebuchet MS",Font.BOLD,15);		
+		head.setFont(fhead);		
+		head.setForeground(Color.blue);		
+		//setSize(500,600);			
+		//setVisible(true);		
+		getContentPane().setBackground(Color.cyan);		
+		gbc.anchor=GridBagConstraints.NORTHWEST;		
+		gbc.gridx=3;		
+		gbc.gridy=1;			
+		gb.setConstraints(head,gbc);		
+		getContentPane().add(head);
+	//-----------------------------------------------------------
+		lsuppid=new JLabel("Supplier Id");
+		lsuppname=new JLabel("Name");
+		//lcustlname=new JLabel("Last Name");
+		lsuppaddr=new JLabel("Address");
+		lsuppcontact=new JLabel("Contact");
+		lsuppmob=new JLabel("Mobile");
+		lsuppfax=new JLabel("Fax");
+ 		lsuppemail=new JLabel("EMail");
+		lsuppcomments=new JLabel("Comments");
+
+
+		tsuppid=new JTextField(10);
+		tsuppname=new JTextField(10);
+		//tcustlname=new JTextField(10);
+		tsuppaddr=new JTextArea(5,10);
+		tsuppcontact=new JTextField(10);
+		tsuppmob=new JTextField(10);
+		tsuppfax=new JTextField(10);
+		tsuppemail=new JTextField(20);
+		tsuppcomments=new JTextArea(5,10); 
+		//csupplier=new JComboBox(ssupplier);
+		badd = new JButton("Add");		
+		bedit = new JButton("Edit");		
+		bsave = new JButton("    Save    ");			
+		bdelete = new JButton("   Delete   ");		
+		bfirst = new JButton("  << First  ");		
+		bprevious = new JButton(" < Previous ");		
+		bnext = new JButton("   Next  >  ");		
+		blast = new JButton("  Last  >>  ");	
+		lsuppid.setFont(fcontrols);
+		lsuppname.setFont(fcontrols);
+		//lcustlname.setFont(fcontrols);
+		lsuppaddr.setFont(fcontrols);
+		lsuppcontact.setFont(fcontrols);
+		lsuppmob.setFont(fcontrols);
+		lsuppfax.setFont(fcontrols);
+		lsuppemail.setFont(fcontrols);
+		lsuppcomments.setFont(fcontrols);
+		lsuppid.setForeground(Color.red);
+		lsuppname.setForeground(Color.red);
+	 	//lcustlname.setForeground(Color.red);
+		lsuppaddr.setForeground(Color.red);
+		lsuppcontact.setForeground(Color.red);
+		lsuppmob.setForeground(Color.red);
+		lsuppfax.setForeground(Color.red);
+		lsuppemail.setForeground(Color.red);
+		lsuppcomments.setForeground(Color.red);
+	//--------------------------------------------------------- 
+		gbc.gridx=1;		
+		gbc.gridy=4;		
+		gb.setConstraints(lsuppid,gbc);		
+		getContentPane().add(lsuppid);
+		gbc.gridx=1;		
+		gbc.gridy=7;		
+		gb.setConstraints(lsuppname,gbc);		
+		getContentPane().add(lsuppname);
+ 	
+		// gbc.gridx=1;		
+		//gbc.gridy=10;		
+		//gb.setConstraints(lcustlname,gbc);		
+		//getContentPane().add(lcustlname);
+		gbc.gridx=1;		
+		gbc.gridy=10;		
+		gb.setConstraints(lsuppaddr,gbc);		
+		getContentPane().add(lsuppaddr);
+		gbc.gridx=1;		
+		gbc.gridy=13;		
+		gb.setConstraints(lsuppcontact,gbc);		
+		getContentPane().add(lsuppcontact);
+		gbc.gridx=1;		
+		gbc.gridy=16;		
+		gb.setConstraints(lsuppmob,gbc);		
+		getContentPane().add(lsuppmob);
+		gbc.gridx=1;		
+		gbc.gridy=19;		
+		gb.setConstraints(lsuppfax,gbc);		
+		getContentPane().add(lsuppfax);
+		gbc.gridx=1;		
+		gbc.gridy=22;		
+		gb.setConstraints(lsuppemail,gbc);		
+		getContentPane().add(lsuppemail);
+		gbc.gridx=1;		
+		gbc.gridy=25;		
+		gb.setConstraints(lsuppcomments,gbc);		
+		getContentPane().add(lsuppcomments);
+	//------------------------------------------------------------------
+		gbc.gridx=3;		
+		gbc.gridy=4;		
+		gb.setConstraints(tsuppid,gbc);			
+		getContentPane().add(tsuppid);
+		gbc.gridx=3;		
+		gbc.gridy=7;		
+		gb.setConstraints(tsuppname,gbc);			
+		getContentPane().add(tsuppname);
+		//gbc.gridx=3;		
+		//gbc.gridy=10;		
+		//gb.setConstraints(tcustlname,gbc);			
+		//getContentPane().add(tcustlname);
+		gbc.gridx=3;		
+		gbc.gridy=10;		
+		gb.setConstraints(tsuppaddr,gbc);			
+		getContentPane().add(tsuppaddr);
+		gbc.gridx=3;		
+		gbc.gridy=13;		
+		gb.setConstraints(tsuppcontact,gbc);			
+		getContentPane().add(tsuppcontact);
+		gbc.gridx=3;		
+		gbc.gridy=16;		
+		gb.setConstraints(tsuppmob,gbc);			
+		getContentPane().add(tsuppmob);
+		gbc.gridx=3;		
+		gbc.gridy=19;		
+		gb.setConstraints(tsuppfax,gbc);			
+		getContentPane().add(tsuppfax);
+		gbc.gridx=3;		
+		gbc.gridy=22;		
+		gb.setConstraints(tsuppemail,gbc);			
+		getContentPane().add(tsuppemail);
+		gbc.gridx=3;		
+		gbc.gridy=25;		
+		gb.setConstraints(tsuppcomments,gbc);			
+		getContentPane().add(tsuppcomments);
+	//-----------------------------------------------------------------
+		gbc.gridx=1;		
+		gbc.gridy=31;	
+		gb.setConstraints(bfirst,gbc);		
+		getContentPane().add(bfirst);		
+		gbc.gridx=7;		
+		gbc.gridy=31;		
+		gb.setConstraints(bprevious,gbc);		
+		getContentPane().add(bprevious);		
+		gbc.gridx=14;		
+		gbc.gridy=31;		
+		gb.setConstraints(bnext,gbc);		
+		getContentPane().add(bnext);		
+		gbc.gridx=21;		
+		gbc.gridy=31;		
+		gb.setConstraints(blast,gbc);		
+		getContentPane().add(blast);		
+		gbc.gridx=22;		
+		gbc.gridy=10;	
+	//---------------------------------------------------------------	
+		gb.setConstraints(badd,gbc);		
+		getContentPane().add(badd);	
+		gbc.gridx=22;		
+		gbc.gridy=16;		
+		gb.setConstraints(bedit,gbc);		
+		getContentPane().add(bedit);
+		gbc.gridx=22;		
+		gbc.gridy=22;		
+		gb.setConstraints(bdelete,gbc);		
+		getContentPane().add(bdelete);
+		gbc.gridx=22;		
+		gbc.gridy=28;		
+		gb.setConstraints(bsave,gbc);		
+		getContentPane().add(bsave);	
+	//----------------------------------------------------------------
+		setSize(1000,1000);
+		pack();
+		setVisible(true);
+	}
+  	public static void main(String args[])
+	{
+ 		Supplier supp=new Supplier();
+	
+	}
+}		

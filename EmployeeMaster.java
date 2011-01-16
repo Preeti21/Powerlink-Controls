@@ -1,0 +1,204 @@
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+import java.sql.*;
+class EmployeeMaster extends JFrame
+{
+ 	JLabel head;
+	Font fhead,fcontrols;
+	JLabel lempid,lempfname,lemplname,lempaddr,lempcontact,lempmob,lempfax,lempemail,lempdesig;
+	JTextField tempid,tempfname,templname,tempcontact,tempmob,tempfax,tempemail;
+	JTextArea tempaddr;
+	JComboBox cempdesig;
+	JButton bfirst,bprevious,bnext,blast,badd,bedit,bdelete,bsave;
+	GridBagLayout gb;	
+	GridBagConstraints gbc;
+	EmployeeMaster()
+	{
+		 Container c=getContentPane();
+		 c.setLayout(new FlowLayout()); 
+		 String sdesig[]={"Manager","Admin","Assistant manager"};
+		 gb=new GridBagLayout();		
+		 gbc=new GridBagConstraints();	
+		 getContentPane().setLayout(gb);	
+		 head=new JLabel("Employee Master Form");		
+		 fhead=new Font("Trebuchet MS",Font.BOLD|Font.ITALIC,30);		
+		 fcontrols=new Font("Trebuchet MS",Font.BOLD,15);		
+		 head.setFont(fhead);		
+		 head.setForeground(Color.blue);		
+		 //setSize(500,600);			
+		 //setVisible(true);		
+		 getContentPane().setBackground(Color.cyan);		
+		 gbc.anchor=GridBagConstraints.NORTHWEST;		
+		 gbc.gridx=3;		
+		 gbc.gridy=1;			
+		 gb.setConstraints(head,gbc);		
+		 getContentPane().add(head);
+	//-----------------------------------------------------------
+		 lempid=new JLabel("Employee Id");
+		 lempfname=new JLabel("First Name");
+		 lemplname=new JLabel("Last Name");
+		 lempaddr=new JLabel("Address");
+		 lempcontact=new JLabel("Contact");
+		lempmob=new JLabel("Mobile");
+		lempfax=new JLabel("Fax");
+	 	lempemail=new JLabel("EMail");
+		lempdesig=new JLabel("Designation");
+
+
+		tempid=new JTextField(10);
+		 tempfname=new JTextField(10);
+		 templname=new JTextField(10);
+		 tempaddr=new JTextArea(5,10);
+		tempcontact=new JTextField(10);
+		tempmob=new JTextField(10);
+		tempfax=new JTextField(10);
+		tempemail=new JTextField(20);
+		//tcustcomments=new JTextArea(5,10); 
+		cempdesig=new JComboBox(sdesig);
+		 badd = new JButton("Add");		
+		 bedit = new JButton("Edit");		
+		 bsave = new JButton("    Save    ");			
+		 bdelete = new JButton("   Delete   ");		
+		 bfirst = new JButton("  << First  ");		
+		 bprevious = new JButton(" < Previous ");		
+		 bnext = new JButton("   Next  >  ");		
+		 blast = new JButton("  Last  >>  ");	
+		 lempid.setFont(fcontrols);
+		 lempfname.setFont(fcontrols);
+		 lemplname.setFont(fcontrols);
+		 lempaddr.setFont(fcontrols);
+		 lempcontact.setFont(fcontrols);
+		 lempmob.setFont(fcontrols);
+		 lempfax.setFont(fcontrols);
+		 lempemail.setFont(fcontrols);
+		 lempdesig.setFont(fcontrols);
+		 lempid.setForeground(Color.red);
+		 lempfname.setForeground(Color.red);
+	 	 lemplname.setForeground(Color.red);
+		 lempaddr.setForeground(Color.red);
+		 lempcontact.setForeground(Color.red);
+		lempmob.setForeground(Color.red);
+		lempfax.setForeground(Color.red);
+		lempemail.setForeground(Color.red);
+		lempdesig.setForeground(Color.red);
+	//--------------------------------------------------------- 
+		gbc.gridx=1;		
+		gbc.gridy=4;		
+		gb.setConstraints(lempid,gbc);		
+		getContentPane().add(lempid);
+		 gbc.gridx=1;		
+		gbc.gridy=7;		
+		gb.setConstraints(lempfname,gbc);		
+		getContentPane().add(lempfname);
+	 	
+		 gbc.gridx=1;		
+		gbc.gridy=10;		
+		gb.setConstraints(lemplname,gbc);		
+		getContentPane().add(lemplname);
+		 gbc.gridx=1;		
+		gbc.gridy=13;		
+		gb.setConstraints(lempaddr,gbc);		
+		getContentPane().add(lempaddr);
+		 gbc.gridx=1;		
+		gbc.gridy=16;		
+		gb.setConstraints(lempcontact,gbc);		
+		getContentPane().add(lempcontact);
+		gbc.gridx=1;		
+		gbc.gridy=19;		
+		gb.setConstraints(lempmob,gbc);		
+		getContentPane().add(lempmob);
+		gbc.gridx=1;		
+		gbc.gridy=22;		
+		gb.setConstraints(lempfax,gbc);		
+		getContentPane().add(lempfax);
+		gbc.gridx=1;		
+		gbc.gridy=25;		
+		gb.setConstraints(lempemail,gbc);		
+		getContentPane().add(lempemail);
+		gbc.gridx=1;		
+		gbc.gridy=28;		
+		gb.setConstraints(lempdesig,gbc);		
+		getContentPane().add(lempdesig);
+	//------------------------------------------------------------------
+		gbc.gridx=3;		
+		gbc.gridy=4;		
+		gb.setConstraints(tempid,gbc);			
+		getContentPane().add(tempid);
+		gbc.gridx=3;		
+		gbc.gridy=7;		
+		gb.setConstraints(tempfname,gbc);			
+		getContentPane().add(tempfname);
+		gbc.gridx=3;		
+		gbc.gridy=10;		
+		gb.setConstraints(templname,gbc);			
+		getContentPane().add(templname);
+		gbc.gridx=3;		
+		gbc.gridy=13;		
+		gb.setConstraints(tempaddr,gbc);			
+		getContentPane().add(tempaddr);
+		gbc.gridx=3;		
+		gbc.gridy=16;		
+		gb.setConstraints(tempcontact,gbc);			
+		getContentPane().add(tempcontact);
+		gbc.gridx=3;		
+		gbc.gridy=19;		
+		gb.setConstraints(tempmob,gbc);			
+		getContentPane().add(tempmob);
+		gbc.gridx=3;		
+		gbc.gridy=22;		
+		gb.setConstraints(tempfax,gbc);			
+		getContentPane().add(tempfax);
+		gbc.gridx=3;		
+		gbc.gridy=25;		
+		gb.setConstraints(tempemail,gbc);			
+		getContentPane().add(tempemail);
+		gbc.gridx=3;		
+		gbc.gridy=28;		
+		gb.setConstraints(cempdesig,gbc);			
+		getContentPane().add(cempdesig);
+	//-----------------------------------------------------------------
+		gbc.gridx=1;		
+		gbc.gridy=31;	
+		gb.setConstraints(bfirst,gbc);		
+		getContentPane().add(bfirst);		
+		gbc.gridx=7;		
+		gbc.gridy=31;		
+		gb.setConstraints(bprevious,gbc);		
+		getContentPane().add(bprevious);		
+		gbc.gridx=14;		
+		gbc.gridy=31;		
+		gb.setConstraints(bnext,gbc);		
+		getContentPane().add(bnext);		
+		gbc.gridx=21;		
+		gbc.gridy=31;		
+		gb.setConstraints(blast,gbc);		
+		getContentPane().add(blast);		
+		gbc.gridx=22;		
+		gbc.gridy=10;	
+	//---------------------------------------------------------------	
+		gb.setConstraints(badd,gbc);		
+		getContentPane().add(badd);	
+		gbc.gridx=22;		
+		gbc.gridy=16;		
+		gb.setConstraints(bedit,gbc);		
+		getContentPane().add(bedit);
+		gbc.gridx=22;		
+		gbc.gridy=22;		
+		gb.setConstraints(bdelete,gbc);		
+		getContentPane().add(bdelete);
+		gbc.gridx=22;		
+		gbc.gridy=28;		
+		gb.setConstraints(bsave,gbc);		
+		getContentPane().add(bsave);	
+	//----------------------------------------------------------------
+		setSize(1000,1000);
+		pack();
+		setVisible(true);
+	}
+  	public static void main(String args[])
+	{
+ 		EmployeeMaster em=new EmployeeMaster();
+	
+	}
+}		
