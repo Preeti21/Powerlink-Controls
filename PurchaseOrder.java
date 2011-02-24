@@ -1,234 +1,223 @@
 import java.awt.*;
+
 import javax.swing.*;
+
 import java.awt.event.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+//import java.sql.*;
+//import java.util.*;
+//import java.util.regex.*;
 class PurchaseOrder extends JFrame
 {
  	JLabel head;
 	Font fhead,fcontrols;
-	JLabel lponum,ldate,lsupplier,lcreditperiod,lamount,lquantity,ltaxcode,ltaxamount,lcurrcode,lempcode,ltotalamount;
-	JTextField tponum,tdate,tcreditperiod,tamount,tquantity,ttaxcode,ttaxamount,tcurrcode,tempcode,ttotalamount;
+	JLabel lponum,ldate,lsupplier,lcreditperiod,lvalidity,lordernum,ltaxcode,ltaxableamt,laddtionaltax,lsurcharge,lcess;
+	JTextField tponum,tdate,tcreditperiod,tvalidity,tordernum,ttaxcode,ttaxableamt,taddtionaltax,tsurcharge,tcess;
 	JComboBox csupplier;
-	JButton bfirst,bprevious,bnext,blast,badd,bedit,bdelete,bsave;
-	GridBagLayout gb;	
+	
+	GridBagLayout gb;
 	GridBagConstraints gbc;
+	Connection con;
+	Statement st;
+	ResultSet rs;
 	PurchaseOrder()
 	{
-		 Container c=getContentPane();
-		 c.setLayout(new FlowLayout()); 
-		 gb=new GridBagLayout();		
-		 gbc=new GridBagConstraints();	
-		 getContentPane().setLayout(gb);	
-		 head=new JLabel("Purchase Order Form");		
-		 fhead=new Font("Trebuchet MS",Font.BOLD|Font.ITALIC,30);		
-		 fcontrols=new Font("Trebuchet MS",Font.BOLD,15);		
-		 head.setFont(fhead);		
-		 head.setForeground(Color.blue);		
-		 //setSize(500,600);			
-		 //setVisible(true);		
-		 getContentPane().setBackground(Color.gray);
-		 gbc.anchor=GridBagConstraints.NORTHWEST;		
-		 gbc.gridx=3;		
-		 gbc.gridy=1;			
-		 gb.setConstraints(head,gbc);		
-		 getContentPane().add(head);
-		 String ssupplier[]={"L & T","abc","xyz"};
-//--------------------------------------------------------------------------------------
-		 lponum=new JLabel("Purchase Order Number");
-		 ldate=new JLabel("Date");
-		 lsupplier=new JLabel("Supplier");
-		 lcreditperiod=new JLabel("Credit Period");
-		 lamount=new JLabel("Amount");
-		 lquantity=new JLabel("Quantity");
-		 ltaxcode=new JLabel("Tax Code");
-		 ltaxamount=new JLabel("Tax Amount");
-		 ltotalamount=new JLabel("Total Amount");
-		 lcurrcode=new JLabel("Currency Code");
-		 lempcode=new JLabel("Employee Code");
-//----------------------------------------------------------------------------------------
-		 tponum=new JTextField(10);
-		 tdate=new JTextField(10);
-		 //tsupplier=new JTextField(10);
-		 tcreditperiod=new JTextField(10);
-		 tamount=new JTextField(10);
-		 tquantity=new JTextField(10);
-		 ttaxcode=new JTextField(10);
-		 ttaxamount=new JTextField(10);
-		 ttotalamount=new JTextField(10);
-		 tcurrcode=new JTextField(10);
-		 tempcode=new JTextField(10);
-//-------------------------------------------------------------------------------------------
- 	 	csupplier=new JComboBox(ssupplier);
-//-------------------------------------------------------------------------------------------
-		 badd = new JButton("Add");		
-		 bedit = new JButton("Edit");		
-		 bsave = new JButton("    Save    ");			
-		 bdelete = new JButton("   Delete   ");		
-		 bfirst = new JButton("  << First  ");		
-		 bprevious = new JButton(" < Previous ");		
-		 bnext = new JButton("   Next  >  ");		
-		 blast = new JButton("  Last  >>  ");	
-//---------------------------------------------------------------------------------------------
-		 lponum.setFont(fcontrols);
-		 ldate.setFont(fcontrols);
-		 lsupplier.setFont(fcontrols);
-		 lcreditperiod.setFont(fcontrols);
-		 lamount.setFont(fcontrols);
-		 lquantity.setFont(fcontrols);
-		 ltaxcode.setFont(fcontrols);
-		 ltaxamount.setFont(fcontrols);
-		 ltotalamount.setFont(fcontrols);
-		 lcurrcode.setFont(fcontrols);
-		 lempcode.setFont(fcontrols);
-//----------------------------------------------------------------------------------------------
-		 lponum.setForeground(Color.red);
-		 ldate.setForeground(Color.red);
-		 lsupplier.setForeground(Color.red);
-		 lcreditperiod.setForeground(Color.red);
-		 lamount.setForeground(Color.red);
-		 lquantity.setForeground(Color.red);
-		 ltaxcode.setForeground(Color.red);
-		 ltaxamount.setForeground(Color.red);
-		 ltotalamount.setForeground(Color.red);
-		 lcurrcode.setForeground(Color.red);
-		 lempcode.setForeground(Color.red);
-//-----------------------------------------------------------------------------------------------
-		gbc.gridx=1;		
-		gbc.gridy=4;		
-		gb.setConstraints(lponum,gbc);		
-		getContentPane().add(lponum);
-		gbc.gridx=1;		
-		gbc.gridy=7;		
-		gb.setConstraints(ldate,gbc);		
-		getContentPane().add(ldate);
-	 	
-		gbc.gridx=1;		
-		gbc.gridy=10;		
-		gb.setConstraints(lsupplier,gbc);		
-		getContentPane().add(lsupplier);
-		gbc.gridx=1;		
-		gbc.gridy=13;		
-		gb.setConstraints(lcreditperiod,gbc);		
-		getContentPane().add(lcreditperiod);
-		gbc.gridx=1;		
-		gbc.gridy=16;		
-		gb.setConstraints(lamount,gbc);		
-		getContentPane().add(lamount);
-		gbc.gridx=1;		
-		gbc.gridy=19;		
-		gb.setConstraints(lquantity,gbc);		
-		getContentPane().add(lquantity);
-		gbc.gridx=1;		
-		gbc.gridy=22;		
-		gb.setConstraints(ltaxcode,gbc);		
-		getContentPane().add(ltaxcode);
-		gbc.gridx=1;		
-		gbc.gridy=25;		
-		gb.setConstraints(ltaxamount,gbc);		
-		getContentPane().add(ltaxamount);
-		gbc.gridx=1;		
-		gbc.gridy=28;		
-		gb.setConstraints(ltotalamount,gbc);		
-		getContentPane().add(ltotalamount);
-		gbc.gridx=1;		
-		gbc.gridy=31;		
-		gb.setConstraints(lcurrcode,gbc);		
-		getContentPane().add(lcurrcode);
-		gbc.gridx=1;		
-		gbc.gridy=34;		
-		gb.setConstraints(lempcode,gbc);		
-		getContentPane().add(lempcode);
+		System.out.println("Here...........");
+		try{
+	 Container c=getContentPane();
+	 c.setLayout(new FlowLayout());
+	 String ssupplier[]={"L&T","abc","xyz"};
+	 gb=new GridBagLayout();
+	 gbc=new GridBagConstraints();
+	 getContentPane().setLayout(gb);
+	 head=new JLabel("Purchase Order Form");
+	 fhead=new Font("Trebuchet MS",Font.BOLD|Font.ITALIC,30);
+	 fcontrols=new Font("Trebuchet MS",Font.BOLD,15);
+	 head.setFont(fhead);
+	 head.setForeground(Color.blue);
+	 getContentPane().setBackground(Color.cyan);
+	 gbc.anchor=GridBagConstraints.NORTHWEST;
+	 gbc.gridx=3;
+	 gbc.gridy=1;
+	 gb.setConstraints(head,gbc);
+	 getContentPane().add(head);
+	//-----------------------------------------------------------
+	 lponum=new JLabel("PO id: ");
+	 ldate=new JLabel("Date : ");
+	 lsupplier=new JLabel("Supplier: ");
+	 lcreditperiod=new JLabel("Credit Period: ");
+	 lvalidity=new JLabel("Validity: ");
+	 lordernum=new JLabel("Order no.: ");
+	 ltaxcode=new JLabel("Tax Code: ");
+	 ltaxableamt=new JLabel("Fax");
+ 	 laddtionaltax=new JLabel("EMail : ");
+ 	lsurcharge=new JLabel("Surcharge :");
+	 lcess=new JLabel("Comments : ");
 
-	//------------------------------------------------------------------
-		gbc.gridx=3;		
-		gbc.gridy=4;		
-		gb.setConstraints(tponum,gbc);			
-		getContentPane().add(tponum);
-		gbc.gridx=3;		
-		gbc.gridy=7;		
-		gb.setConstraints(tdate,gbc);			
-		getContentPane().add(tdate);
-		gbc.gridx=3;		
-		gbc.gridy=10;		
-		gb.setConstraints(csupplier,gbc);			
-		getContentPane().add(csupplier);
-		gbc.gridx=3;		
-		gbc.gridy=13;		
-		gb.setConstraints(tcreditperiod,gbc);			
-		getContentPane().add(tcreditperiod);
-		gbc.gridx=3;		
-		gbc.gridy=16;		
-		gb.setConstraints(tamount,gbc);			
-		getContentPane().add(tamount);
-		gbc.gridx=3;		
-		gbc.gridy=19;		
-		gb.setConstraints(tquantity,gbc);			
-		getContentPane().add(tquantity);
-		gbc.gridx=3;		
-		gbc.gridy=22;		
-		gb.setConstraints(ttaxcode,gbc);			
-		getContentPane().add(ttaxcode);
-		gbc.gridx=3;		
-		gbc.gridy=25;		
-		gb.setConstraints(ttaxamount,gbc);			
-		getContentPane().add(ttaxamount);
-		gbc.gridx=3;		
-		gbc.gridy=28;		
-		gb.setConstraints(ttotalamount,gbc);			
-		getContentPane().add(ttotalamount);
-		gbc.gridx=3;		
-		gbc.gridy=31;		
-		gb.setConstraints(tcurrcode,gbc);			
-		getContentPane().add(tcurrcode);
-		gbc.gridx=3;		
-		gbc.gridy=34;		
-		gb.setConstraints(tempcode,gbc);			
-		getContentPane().add(tempcode);
 
-	//-----------------------------------------------------------------
-		gbc.gridx=1;		
-		gbc.gridy=40;	
-		gb.setConstraints(bfirst,gbc);		
-		getContentPane().add(bfirst);		
-		gbc.gridx=7;		
-		gbc.gridy=40;		
-		gb.setConstraints(bprevious,gbc);		
-		getContentPane().add(bprevious);		
-		gbc.gridx=14;		
-		gbc.gridy=40;		
-		gb.setConstraints(bnext,gbc);		
-		getContentPane().add(bnext);		
-		gbc.gridx=21;		
-		gbc.gridy=40;		
-		gb.setConstraints(blast,gbc);		
-		getContentPane().add(blast);	
-//---------------------------------------------------------------------------------	
-		gbc.gridx=22;		
-		gbc.gridy=10;	
-		
-		gb.setConstraints(badd,gbc);		
-		getContentPane().add(badd);	
-		gbc.gridx=22;		
-		gbc.gridy=16;		
-		gb.setConstraints(bedit,gbc);		
-		getContentPane().add(bedit);
-		gbc.gridx=22;		
-		gbc.gridy=22;		
-		gb.setConstraints(bdelete,gbc);		
-		getContentPane().add(bdelete);
-		gbc.gridx=22;		
-		gbc.gridy=28;		
-		gb.setConstraints(bsave,gbc);		
-		getContentPane().add(bsave);	
-	//----------------------------------------------------------------
-		setSize(1000,1000);
-		pack();
-		setVisible(true);
-	}
-  	public static void main(String args[])
-	{
- 		PurchaseOrder po=new PurchaseOrder();
+	 tponum = new JTextField(10);
+	 tdate=new JTextField(10);
+	 tcreditperiod=new JTextField(10);
+	 tvalidity=new JTextField(10);
+	 tordernum=new JTextField(10);
+	 ttaxcode=new JTextField(10);
+	 ttaxableamt=new JTextField(10);
+	 taddtionaltax=new JTextField(20);
+	 tsurcharge=new JTextField(10);
+	 tcess=new JTextField(10);
+	 csupplier=new JComboBox(ssupplier);
+
 	
+//-----------------------------------------------------------------------
+	
+//-----------------------------------------------------------------------
+	 lponum.setFont(fcontrols);
+	 ldate.setFont(fcontrols);
+	 lsupplier.setFont(fcontrols);
+	 lcreditperiod.setFont(fcontrols);
+	 lvalidity.setFont(fcontrols);
+	 lordernum.setFont(fcontrols);
+	 ltaxcode.setFont(fcontrols);
+	 ltaxableamt.setFont(fcontrols);
+	 laddtionaltax.setFont(fcontrols);
+	 lsurcharge.setFont(fcontrols);
+	 lcess.setFont(fcontrols);
+
+	 lponum.setForeground(Color.red);
+	 ldate.setForeground(Color.red);
+	 lsupplier.setForeground(Color.red);
+ 	 lcreditperiod.setForeground(Color.red);
+	 lvalidity.setForeground(Color.red);
+	 lordernum.setForeground(Color.red);
+	 ltaxcode.setForeground(Color.red);
+	 ltaxableamt.setForeground(Color.red);
+	 laddtionaltax.setForeground(Color.red);
+	 lsurcharge.setForeground(Color.red);
+	 lcess.setForeground(Color.red);
+//-------------------------------------------------------------------------
+	 gbc.gridx=1;
+	 gbc.gridy=4;
+	 gb.setConstraints(lponum,gbc);
+	 getContentPane().add(lponum);
+	 gbc.gridx=1;
+	 gbc.gridy=7;
+	 gb.setConstraints(ldate,gbc);
+	 getContentPane().add(ldate);
+
+	 gbc.gridx=1;
+	 gbc.gridy=10;
+	 gb.setConstraints(lsupplier,gbc);
+	 getContentPane().add(lsupplier);
+	 gbc.gridx=10;
+	 gbc.gridy=3;
+	 gb.setConstraints(lcreditperiod,gbc);
+	 getContentPane().add(lcreditperiod);
+	 gbc.gridx=10;
+	 gbc.gridy=7;
+	 gb.setConstraints(lvalidity,gbc);
+	 getContentPane().add(lvalidity);
+	 gbc.gridx=10;
+	 gbc.gridy=10;
+	 gb.setConstraints(lordernum,gbc);
+	 getContentPane().add(lordernum);
+	 gbc.gridx=20;
+	 gbc.gridy=3;
+	 gb.setConstraints(ltaxcode,gbc);
+	 getContentPane().add(ltaxcode);
+	 gbc.gridx=20;
+	 gbc.gridy=7;
+	 gb.setConstraints(ltaxableamt,gbc);
+	 getContentPane().add(ltaxableamt);
+	 gbc.gridx=20;
+	 gbc.gridy=10;
+	 gb.setConstraints(laddtionaltax,gbc);
+	 getContentPane().add(laddtionaltax);
+	 gbc.gridx=30;
+	 gbc.gridy=3;
+	 gb.setConstraints(lsurcharge,gbc);
+	 getContentPane().add(lsurcharge);
+	 gbc.gridx=30;
+	 gbc.gridy=7;
+	 gb.setConstraints(lcess,gbc);
+	 getContentPane().add(lcess);
+	//------------------------------------------------------------------
+	gbc.gridx=3;
+	gbc.gridy=4;
+	gb.setConstraints(tponum,gbc);
+	getContentPane().add(tponum);
+	gbc.gridx=3;
+	gbc.gridy=7;
+	gb.setConstraints(tdate,gbc);
+	getContentPane().add(tdate);
+	gbc.gridx=3;
+	gbc.gridy=10;
+	gb.setConstraints(csupplier,gbc);
+	getContentPane().add(csupplier);
+	gbc.gridx=13;
+	gbc.gridy=4;
+	gb.setConstraints(tcreditperiod,gbc);
+	getContentPane().add(tcreditperiod);
+	gbc.gridx=13;
+	gbc.gridy=7;
+	gb.setConstraints(tvalidity,gbc);
+	getContentPane().add(tvalidity);
+	gbc.gridx=13;
+	gbc.gridy=10;
+	gb.setConstraints(tordernum,gbc);
+	getContentPane().add(tordernum);
+	gbc.gridx=23;
+	gbc.gridy=4;
+	gb.setConstraints(ttaxcode,gbc);
+	getContentPane().add(ttaxcode);
+	gbc.gridx=23;
+	gbc.gridy=7;
+	gb.setConstraints(ttaxableamt,gbc);
+	getContentPane().add(ttaxableamt);
+	gbc.gridx=23;
+	gbc.gridy=10;
+	gb.setConstraints(taddtionaltax,gbc);
+	getContentPane().add(taddtionaltax);
+	gbc.gridx=33;
+	gbc.gridy=4;
+	gb.setConstraints(tsurcharge,gbc);
+	getContentPane().add(tsurcharge);
+	gbc.gridx=33;
+	gbc.gridy=7;
+	gb.setConstraints(tcess,gbc);
+	getContentPane().add(tcess);
+//-----------------------------------------------------------------------------
+		//----------------------------------------------------------------
+	setSize(200,200);
+	pack();
+	setVisible(true);
+	con = DConnection.getConnection();
+	String query1 = "select * from t_po";
+	st = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+	rs = st.executeQuery(query1);
+	/*while (rs.next())
+	{
+		System.out.println("From Database Customer Name : " + rs.getString(2));
+	}*/
+
 	}
-}		
+		catch(Exception e){
+			
+			e.printStackTrace();
+		}
+	}
+//--------------------------------------------------------------------------------
+
+	//----------------------------------------------------------------------------
+
+	public static void main(String args[])
+	{
+		PurchaseOrder obj=new PurchaseOrder();
+
+	}
+}
+
+
 
