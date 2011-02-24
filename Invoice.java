@@ -10,24 +10,21 @@ import java.sql.Statement;
 //import java.sql.*;
 //import java.util.*;
 //import java.util.regex.*;
-class PurchaseOrder extends JFrame
+class Invoice extends JFrame
 {
  	JLabel head;
 	Font fhead,fcontrols;
-	JLabel lponum,ldate,lsupplier,lcreditperiod,lvalidity,lordernum,ltaxcode,ltaxamt,ltaxableamt,ltaxableamtcal,laddtionaltax,lsurcharge,lcess,lcurrcode,lquantity;
-	JTextField tponum,tdate,tcreditperiod,tvalidity,tordernum,ttaxcode,ttaxamt,taddtionaltax,tsurcharge,tcess,tcurrcode,tquantity;
+	JLabel linvoice_num,ldate,lsupplier,lcreditperiod,lvalidity,lordernum,ltaxcode,ltaxamt,ltaxableamt,ltaxableamtcal,laddtionaltax,lsurcharge,lcess,lcurrcode,lquantity;
+	JTextField tinvoice_num,tdate,tcreditperiod,tvalidity,tordernum,ttaxcode,ttaxamt,taddtionaltax,tsurcharge,tcess,tcurrcode,tquantity;
 	JComboBox csupplier;
 	JButton newentry,change,delete,save,exit;
-	
-	//--------------------------------------------------------------------------
+//--------------------------------------------------------------------------
 	 
 	
 	GridBagLayout gb;
 	GridBagConstraints gbc;
 	Connection con;
-	Statement st_sup, st_po_num;
-	ResultSet rs,rs1;
-	PurchaseOrder()
+	Invoice()
 	{
 		System.out.println("Here...........");
 		try{
@@ -37,26 +34,26 @@ class PurchaseOrder extends JFrame
 	 gb=new GridBagLayout();
 	 gbc=new GridBagConstraints();
 	 getContentPane().setLayout(gb);
-	 head=new JLabel("Purchase Order Form");
+	 head=new JLabel("Invoice Form");
 	 fhead=new Font("Trebuchet MS",Font.BOLD|Font.ITALIC,30);
 	 fcontrols=new Font("Trebuchet MS",Font.BOLD,15);
 	 head.setFont(fhead);
 	 head.setForeground(Color.blue);
 	 getContentPane().setBackground(Color.cyan);
 	 gbc.anchor=GridBagConstraints.NORTHWEST;
-	 gbc.gridx=3;
+	 gbc.gridx=2;
 	 gbc.gridy=1;
 	 gb.setConstraints(head,gbc);
 	 getContentPane().add(head);
 	//-----------------------------------------------------------
-	 lponum=new JLabel("PO id: ");
-	 ldate=new JLabel("Date : ");
-	 lsupplier=new JLabel("Supplier: ");
-	 lcreditperiod=new JLabel("Credit Period: ");
-	 lvalidity=new JLabel("Validity: ");
-	 lordernum=new JLabel("Order no.: ");
-	 ltaxcode=new JLabel("Tax Code: ");
-	 ltaxamt=new JLabel("Tax Amt");
+	 linvoice_num=new JLabel("Invoice Number");
+	 ldate=new JLabel("Date");
+	 lsupplier=new JLabel("Supplier");
+	 lcreditperiod=new JLabel("Credit Period");
+	 lvalidity=new JLabel("Validity");
+	 lordernum=new JLabel("Order Number");
+	 ltaxcode=new JLabel("Tax Code");
+	 ltaxamt=new JLabel("Tax Amount");
 	 ltaxableamt=new JLabel("Taxable Amt");
 	 ltaxableamtcal=new JLabel("");
  	 laddtionaltax=new JLabel("Additional Tax : ");
@@ -65,8 +62,7 @@ class PurchaseOrder extends JFrame
 	 lcurrcode=new JLabel("Currency Code");
 	 lquantity=new JLabel("Quantity");
 
-
-	 tponum = new JTextField(10);
+	 tinvoice_num= new JTextField(10);
 	 tdate=new JTextField(10);
 	 tcreditperiod=new JTextField(10);
 	 tvalidity=new JTextField(10);
@@ -88,7 +84,6 @@ class PurchaseOrder extends JFrame
 	 save=new JButton("Save");
 	 exit=new JButton("Exit");
 	 //-------------------------------------------------------------------------
-	 
 	 DefaultTableModel model = new DefaultTableModel();
 	 JTable jt=new JTable(model);
 	 jt.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -117,7 +112,7 @@ class PurchaseOrder extends JFrame
 //-----------------------------------------------------------------------
 	
 //-----------------------------------------------------------------------
-	 lponum.setFont(fcontrols);
+	 linvoice_num.setFont(fcontrols);
 	 ldate.setFont(fcontrols);
 	 lsupplier.setFont(fcontrols);
 	 lcreditperiod.setFont(fcontrols);
@@ -132,7 +127,7 @@ class PurchaseOrder extends JFrame
 	 lcurrcode.setFont(fcontrols);
 	 lquantity.setFont(fcontrols);
 	 
-	 lponum.setForeground(Color.red);
+	 linvoice_num.setForeground(Color.red);
 	 ldate.setForeground(Color.red);
 	 lsupplier.setForeground(Color.red);
  	 lcreditperiod.setForeground(Color.red);
@@ -149,8 +144,8 @@ class PurchaseOrder extends JFrame
 //-------------------------------------------------------------------------
 	 gbc.gridx=1;
 	 gbc.gridy=4;
-	 gb.setConstraints(lponum,gbc);
-	 getContentPane().add(lponum);
+	 gb.setConstraints(linvoice_num,gbc);
+	 getContentPane().add(linvoice_num);
 	
 	 gbc.gridx=1;
 	 gbc.gridy=7;
@@ -164,8 +159,8 @@ class PurchaseOrder extends JFrame
 	 
 	 gbc.gridx=2;
 	gbc.gridy=4;
-	gb.setConstraints(tponum,gbc);
-	getContentPane().add(tponum);
+	gb.setConstraints(tinvoice_num,gbc);
+	getContentPane().add(tinvoice_num);
 	gbc.gridx=2;
 	gbc.gridy=7;
 	gb.setConstraints(tdate,gbc);
@@ -317,29 +312,7 @@ class PurchaseOrder extends JFrame
 	setSize(200,200);
 	pack();
 	setVisible(true);
-	con = DConnection.getConnection();
-	String query1 = "select * from t_supplier_master";
-	st_sup = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-	st_po_num = con.createStatement();
-	String query2= "select PO_ID from t_purchase_order";
-	
-	rs = st_sup.executeQuery(query1);
-	rs1=st_po_num.executeQuery(query2);
-	String last_po_num="";
-	while (rs.next())
-	{
-		csupplier.addItem(rs.getString(2));
-	}
-	while (rs1.next())
-	{
-		last_po_num = rs1.getString(1);
-	}
-	int temp = Integer.parseInt(last_po_num.substring(1));
-	temp = temp+1;
-	
-	String new_po_num = 
-
-	}
+		}
 		catch(Exception e){
 			
 			e.printStackTrace();
@@ -351,10 +324,7 @@ class PurchaseOrder extends JFrame
 
 	public static void main(String args[])
 	{
-		PurchaseOrder obj=new PurchaseOrder();
+		Invoice inv=new Invoice();
 
 	}
 }
-
-
-
